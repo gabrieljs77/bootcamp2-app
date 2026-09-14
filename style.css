@@ -1,0 +1,323 @@
+/* =========================================================
+   Pokédex — folha de estilo
+   Ideia visual: um aparelho de plástico vermelho com uma
+   tela de LCD esverdeada, como a Pokédex do desenho.
+   ========================================================= */
+
+:root {
+  --casco: #b5202b;         /* vermelho do aparelho */
+  --casco-escuro: #7f1119;  /* sombra / borda do casco */
+  --tela: #d9e7bd;          /* verde claro do visor */
+  --tela-borda: #8fa172;
+  --tinta: #23301a;         /* texto sobre a tela */
+  --lente: #63b3ed;
+  --papel: #f3ece2;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 24px 16px 48px;
+  font-family: "Jost", "Segoe UI", system-ui, sans-serif;
+  background: repeating-linear-gradient(
+    135deg, #2a2f26, #2a2f26 14px, #262b23 14px, #262b23 28px
+  );
+  color: var(--tinta);
+  display: flex;
+  justify-content: center;
+}
+
+/* ---------- O aparelho ---------- */
+
+.pokedex {
+  width: 100%;
+  max-width: 560px;
+  background: var(--casco);
+  border: 3px solid var(--casco-escuro);
+  border-radius: 18px 18px 26px 26px;
+  padding: 20px;
+  box-shadow: inset 0 -6px 0 rgba(0, 0, 0, 0.25);
+}
+
+/* ---------- Topo: lente e luzes ---------- */
+
+.topo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.lente {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 30%, #cfe9ff 0 18%, var(--lente) 22% 100%);
+  border: 5px solid var(--papel);
+  flex-shrink: 0;
+}
+
+.luz {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 0, 0, 0.35);
+}
+
+.luz--vermelha { background: #f05a5a; }
+.luz--amarela  { background: #f2c94c; }
+.luz--verde    { background: #6fcf6f; }
+
+.titulo {
+  margin: 0 0 0 auto;
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--papel);
+}
+
+/* ---------- Área de busca ---------- */
+
+.busca {
+  margin-bottom: 18px;
+}
+
+.busca__rotulo {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.busca__linha {
+  display: flex;
+  gap: 8px;
+}
+
+.busca__campo {
+  flex: 1;
+  min-width: 0;
+  padding: 11px 14px;
+  font: inherit;
+  font-size: 1rem;
+  color: var(--tinta);
+  background: var(--papel);
+  border: 2px solid var(--casco-escuro);
+  border-radius: 8px;
+}
+
+.botao {
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 8px;
+  border: 2px solid var(--casco-escuro);
+  padding: 11px 18px;
+}
+
+.botao--principal {
+  background: var(--papel);
+  color: var(--casco-escuro);
+  font-weight: 700;
+}
+
+.botao--secundario {
+  width: 100%;
+  margin-top: 8px;
+  background: transparent;
+  color: var(--papel);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.botao:hover {
+  filter: brightness(1.08);
+}
+
+/* Foco visível para quem navega pelo teclado */
+.busca__campo:focus-visible,
+.botao:focus-visible {
+  outline: 3px solid #f2c94c;
+  outline-offset: 2px;
+}
+
+/* ---------- A tela ---------- */
+
+.tela {
+  min-height: 330px;
+  padding: 18px;
+  background: var(--tela);
+  border: 4px solid var(--tela-borda);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.aviso {
+  margin: 0;
+  text-align: center;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #4a5a3c;
+}
+
+.aviso strong {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 1.1rem;
+  color: var(--tinta);
+}
+
+/* ---------- Cartão do Pokémon ---------- */
+
+.cartao {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.cartao__sprite {
+  width: 190px;
+  height: 190px;
+  object-fit: contain;
+  image-rendering: auto;
+  filter: drop-shadow(0 6px 6px rgba(0, 0, 0, 0.22));
+}
+
+.cartao__numero {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #5c6b4d;
+}
+
+.cartao__nome {
+  margin: 2px 0 10px;
+  font-size: 1.9rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+/* Tipos */
+
+.tipos {
+  list-style: none;
+  display: flex;
+  gap: 8px;
+  padding: 0;
+  margin: 0 0 16px;
+}
+
+.tipo {
+  padding: 4px 14px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #fff;
+  text-transform: capitalize;
+  background: #6b7280;
+}
+
+.tipo--normal   { background: #9a9a74; }
+.tipo--fire     { background: #e07c30; }
+.tipo--water    { background: #5a86ec; }
+.tipo--grass    { background: #5aa83e; }
+.tipo--electric { background: #d4a70c; color: #2b2200; }
+.tipo--ice      { background: #62bcbc; }
+.tipo--fighting { background: #b3251f; }
+.tipo--poison   { background: #8e3c8e; }
+.tipo--ground   { background: #ab8b3c; }
+.tipo--flying   { background: #8a72e8; }
+.tipo--psychic  { background: #e3547e; }
+.tipo--bug      { background: #869b12; }
+.tipo--rock     { background: #9a8a35; }
+.tipo--ghost    { background: #635196; }
+.tipo--dragon   { background: #5c33ec; }
+.tipo--dark     { background: #5a483c; }
+.tipo--steel    { background: #8a8aa3; }
+.tipo--fairy    { background: #cd7f92; }
+
+/* Ficha de dados */
+
+.dados {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  width: 100%;
+  margin: 0 0 16px;
+  padding: 12px 0;
+  border-top: 2px dashed var(--tela-borda);
+  border-bottom: 2px dashed var(--tela-borda);
+}
+
+.dados dt {
+  font-size: 0.75rem;
+  color: #5c6b4d;
+}
+
+.dados dd {
+  margin: 2px 0 0;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+/* Barras de atributos */
+
+.stats {
+  width: 100%;
+  display: grid;
+  gap: 7px;
+}
+
+.stat {
+  display: grid;
+  grid-template-columns: 70px 1fr 34px;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+}
+
+.stat__barra {
+  height: 9px;
+  background: rgba(0, 0, 0, 0.14);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.stat__preenchimento {
+  display: block;
+  height: 100%;
+  background: var(--casco);
+  border-radius: 999px;
+}
+
+.stat__valor {
+  text-align: right;
+  font-weight: 700;
+}
+
+/* ---------- Rodapé ---------- */
+
+.rodape {
+  margin-top: 14px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.rodape a {
+  color: var(--papel);
+}
+
+/* ---------- Telas pequenas ---------- */
+
+@media (max-width: 420px) {
+  .busca__linha { flex-direction: column; }
+  .botao--principal { width: 100%; }
+  .cartao__sprite { width: 150px; height: 150px; }
+  .titulo { font-size: 1.3rem; }
+}
