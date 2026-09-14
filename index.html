@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pokédex — consulta por nome ou número</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <main class="pokedex">
+
+    <!-- Topo do aparelho: lente + luzes, como na Pokédex clássica -->
+    <header class="topo">
+      <span class="lente" aria-hidden="true"></span>
+      <span class="luz luz--vermelha" aria-hidden="true"></span>
+      <span class="luz luz--amarela" aria-hidden="true"></span>
+      <span class="luz luz--verde" aria-hidden="true"></span>
+      <h1 class="titulo">Pokédex</h1>
+    </header>
+
+    <!-- Entrada do usuário: é daqui que sai a consulta à API -->
+    <div class="busca">
+      <label class="busca__rotulo" for="campo-busca">Nome ou número do Pokémon</label>
+      <div class="busca__linha">
+        <input
+          id="campo-busca"
+          class="busca__campo"
+          type="text"
+          placeholder="pikachu, charizard, 150..."
+          autocomplete="off">
+        <button id="botao-buscar" class="botao botao--principal" type="button">Buscar</button>
+      </div>
+      <button id="botao-sorte" class="botao botao--secundario" type="button">Sortear um Pokémon</button>
+    </div>
+
+    <!-- Tela onde o JavaScript escreve o resultado -->
+    <section id="resultado" class="tela" aria-live="polite">
+      <p class="aviso">Digite um nome ou número para começar.</p>
+    </section>
+
+    <footer class="rodape">
+      Dados de <a href="https://pokeapi.co" target="_blank" rel="noopener">PokéAPI</a>
+    </footer>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
