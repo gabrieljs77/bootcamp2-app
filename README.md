@@ -17,7 +17,7 @@ Pokédex que consulta a PokéAPI (`https://pokeapi.co/api/v2/pokemon/{nome-ou-id
 ## Executar com Docker
 
 ```bash
-docker run -d -p 8080:80 gabrielagaguiar/bootcamp2-app:1.0
+docker run -d -p 8080:80 gabrielagaguiar/bootcamp2-app:1.1
 ```
 
 Depois abra http://localhost:8080
