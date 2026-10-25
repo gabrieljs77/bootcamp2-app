@@ -2,7 +2,24 @@
    Pokédex — lógica da aplicação
    API: PokéAPI  (https://pokeapi.co/api/v2/pokemon/{nome-ou-id})
    ========================================================= */
+// Conectando com o Supabase
+const supabaseUrl = 'https://edkldthpcbbtncxqjtzq.supabase.co';
+const supabaseKey = 'sb_publishable__YC4reEpsydGFkwbXjKXCw_7ZHtalID';
+const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
+// Função para salvar o favorito
+async function favoritarPokemon(nomeDoPokemon) {
+  const { data, error } = await supabase
+    .from('pokemons_favoritos')
+    .insert([{ nome: nomeDoPokemon }]);
+
+  if (error) {
+    alert("Erro ao salvar!");
+    console.log(error);
+  } else {
+    alert(nomeDoPokemon + " foi salvo nos favoritos!");
+  }
+}
 const campo = document.getElementById("campo-busca");
 const botaoBuscar = document.getElementById("botao-buscar");
 const botaoSorte = document.getElementById("botao-sorte");
