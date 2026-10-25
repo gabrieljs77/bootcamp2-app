@@ -12,12 +12,12 @@ Pokédex que consulta a PokéAPI (`https://pokeapi.co/api/v2/pokemon/{nome-ou-id
 
 * **Repositório GitHub:** https://github.com/gabrieljs77/bootcamp2-app
 * **Aplicação (GitHub Pages):** https://gabrieljs77.github.io/bootcamp2-app/
-* **Docker Hub:** https://hub.docker.com/r/SEU_USUARIO/bootcamp2-app
+* **Docker Hub:** https://hub.docker.com/r/gabrielagaguiar/bootcamp2-app
 
 ## Executar com Docker
 
 ```bash
-docker run -d -p 8080:80 SEU_USUARIO/bootcamp2-app:1.0
+docker run -d -p 8080:80 gabrielagaguiar/bootcamp2-app:1.0
 ```
 
 Depois abra http://localhost:8080
