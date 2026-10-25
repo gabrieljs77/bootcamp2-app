@@ -2,24 +2,61 @@
    Pokédex — lógica da aplicação
    API: PokéAPI  (https://pokeapi.co/api/v2/pokemon/{nome-ou-id})
    ========================================================= */
-// Conectando com o Supabase
-const supabaseUrl = 'https://edkldthpcbbtncxqjtzq.supabase.co';
-const supabaseKey = 'sb_publishable__YC4reEpsydGFkwbXjKXCw_7ZHtalID';
-const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+// ---------- Supabase (persistência) ----------
+const supabaseUrl = "https://edkldthpcbbtncxqjtzq.supabase.co";
+const supabaseKey = "sb_publishable__YC4reEpsydGFkwbXjKXCw_7ZHtalID"; // chave pública (anon): protegida pelas políticas RLS
+const db = window.supabase.createClient(supabaseUrl, supabaseKey);
+const TABELA = "pokemons_favoritos";
+const listaFavoritos = document.getElementById("lista-favoritos");
+let pokemonAtual = null;
 
-// Função para salvar o favorito
-async function favoritarPokemon(nomeDoPokemon) {
-  const { data, error } = await supabase
-    .from('pokemons_favoritos')
-    .insert([{ nome: nomeDoPokemon }]);
-
-  if (error) {
-    alert("Erro ao salvar!");
-    console.log(error);
-  } else {
-    alert(nomeDoPokemon + " foi salvo nos favoritos!");
-  }
+// CREATE
+async function favoritarPokemon(nome, pokemonId) {
+  const { error } = await db.from(TABELA).insert([{ nome, pokemon_id: pokemonId }]);
+  if (error) { console.error(error); alert("Erro ao salvar!"); return; }
+  carregarFavoritos();
 }
+// READ
+async function carregarFavoritos() {
+  const { data, error } = await db.from(TABELA).select("*").order("criado_em", { ascending: false });
+  if (error) { console.error(error); listaFavoritos.textContent = "Erro ao carregar favoritos."; return; }
+  listaFavoritos.innerHTML = "";
+  if (data.length === 0) { listaFavoritos.textContent = "Nenhum favorito ainda."; return; }
+  data.forEach((fav) => {
+    const li = document.createElement("li");
+    li.className = "fav";
+    const nome = document.createElement("span");
+    nome.className = "fav__nome";
+    nome.textContent = fav.nome;
+    const nota = document.createElement("input");
+    nota.className = "fav__nota";
+    nota.placeholder = "Anotação...";
+    nota.value = fav.nota || "";
+    const salvar = document.createElement("button");
+    salvar.textContent = "Salvar nota";
+    salvar.onclick = () => atualizarNota(fav.id, nota.value);
+    const ver = document.createElement("button");
+    ver.textContent = "Ver";
+    ver.onclick = () => buscarPokemon(fav.nome);
+    const excluir = document.createElement("button");
+    excluir.textContent = "Excluir";
+    excluir.onclick = () => excluirFavorito(fav.id);
+    li.append(nome, nota, salvar, ver, excluir);
+    listaFavoritos.appendChild(li);
+  });
+}
+// UPDATE (bônus)
+async function atualizarNota(id, nota) {
+  const { error } = await db.from(TABELA).update({ nota }).eq("id", id);
+  if (error) { console.error(error); alert("Erro ao atualizar!"); }
+}
+// DELETE
+async function excluirFavorito(id) {
+  const { error } = await db.from(TABELA).delete().eq("id", id);
+  if (error) { console.error(error); alert("Erro ao excluir!"); return; }
+  carregarFavoritos();
+}
+
 const campo = document.getElementById("campo-busca");
 const botaoBuscar = document.getElementById("botao-buscar");
 const botaoSorte = document.getElementById("botao-sorte");
@@ -80,9 +117,10 @@ async function buscarPokemon(termo) {
    --------------------------------------------------------- */
 
 function exibirPokemon(dados) {
-  const numero = String(dados.id).padStart(3, "0");
-  const altura = (dados.height / 10).toFixed(1).replace(".", ",");  // decímetros -> metros
-  const peso = (dados.weight / 10).toFixed(1).replace(".", ",");    // hectogramas -> quilos
+  pokemonAtual = dados;
+  const numero = formatarNumero(dados.id);
+  const altura = formatarAltura(dados.height);
+  const peso = formatarPeso(dados.weight);
   const habilidade = dados.abilities[0].ability.name.replace("-", " ");
 
   const imagem =
@@ -96,7 +134,7 @@ function exibirPokemon(dados) {
   const stats = dados.stats
     .filter((item) => NOMES_DOS_STATS[item.stat.name])
     .map((item) => {
-      const largura = Math.min((item.base_stat / 150) * 100, 100);
+      const largura = larguraBarra(item.base_stat);
       return `
         <div class="stat">
           <span>${NOMES_DOS_STATS[item.stat.name]}</span>
@@ -120,7 +158,10 @@ function exibirPokemon(dados) {
         <div><dt>Habilidade</dt><dd>${habilidade}</dd></div>
       </dl>
       <div class="stats">${stats}</div>
+      <button id="botao-favoritar" class="botao--fav" type="button">⭐ Favoritar</button>
     </article>`;
+  document.getElementById("botao-favoritar").onclick = () =>
+    favoritarPokemon(dados.name, dados.id);
 }
 
 function mostrarAviso(titulo, detalhe = "") {
@@ -136,7 +177,7 @@ function mostrarAviso(titulo, detalhe = "") {
    --------------------------------------------------------- */
 
 function buscarDoCampo() {
-  const termo = campo.value.trim().toLowerCase();
+  const termo = normalizarTermo(campo.value);
 
   if (termo === "") {
     mostrarAviso("Digite algo para buscar", "Por exemplo: pikachu, eevee ou 448.");
@@ -164,5 +205,6 @@ botaoSorte.addEventListener("click", () => {
 
 // Ao abrir a página já mostramos um Pokémon, para a tela não nascer vazia
 window.addEventListener("load", () => {
+  carregarFavoritos();
   botaoSorte.click();
 });

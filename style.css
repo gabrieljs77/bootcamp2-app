@@ -321,3 +321,13 @@ body {
   .cartao__sprite { width: 150px; height: 150px; }
   .titulo { font-size: 1.3rem; }
 }
+
+/* ---------- Favoritos (Supabase) ---------- */
+.favoritos { margin-top: 1rem; padding: 0.75rem; background: #f4f4f4; border-radius: 8px; color: #222; }
+.favoritos__titulo { margin: 0 0 0.5rem; font-size: 1.1rem; }
+.favoritos__lista { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.5rem; }
+.fav { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; background: #fff; padding: 0.5rem; border-radius: 6px; }
+.fav__nome { font-weight: 700; text-transform: capitalize; flex: 1 1 100px; }
+.fav__nota { flex: 2 1 140px; padding: 0.3rem; }
+.fav button, .botao--fav { cursor: pointer; padding: 0.3rem 0.6rem; border-radius: 6px; border: 1px solid #999; background: #eee; }
+.botao--fav { margin-top: 0.75rem; }
